@@ -1,0 +1,124 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test de Contratación Laboral</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+        }
+        .question {
+            margin-bottom: 15px;
+        }
+        .options label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin-top: 20px;
+            font-size: 16px;
+        }
+        .btn:hover {
+            background: #218838;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 10px;
+            font-weight: bold;
+            text-align: center;
+        }
+        .correct {
+            color: green;
+        }
+        .incorrect {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Test de Contratación Laboral</h1>
+    <form id="quizForm">
+        <div id="questions"></div>
+        <button type="button" class="btn" onclick="calcularResultados()">Enviar respuestas</button>
+    </form>
+    <div id="resultados" class="result"></div>
+</div>
+
+<script>
+const preguntas = [
+    { pregunta: "¿Cuál de las siguientes NO es una fuente del derecho laboral?", opciones: ["Leyes y reglamentos", "Convenios colectivos", "Código Penal", "Usos y costumbres profesionales"], respuesta: "Código Penal" },
+    { pregunta: "¿Cuál de los siguientes contratos es una modalidad de contrato temporal?", opciones: ["Contrato indefinido ordinario", "Contrato de interinidad", "Contrato de relevo", "Contrato de formación en alternancia"], respuesta: "Contrato de interinidad" },
+    { pregunta: "¿Qué contrato permite la alternancia entre formación y empleo?", opciones: ["Contrato por obra o servicio", "Contrato de formación en alternancia", "Contrato indefinido fijo-discontinuo", "Contrato de interinidad"], respuesta: "Contrato de formación en alternancia" },
+    { pregunta: "¿Cuál es la duración máxima de la jornada ordinaria semanal en España?", opciones: ["35 horas", "40 horas", "45 horas", "50 horas"], respuesta: "40 horas" },
+    { pregunta: "¿Cuál es una de las principales diferencias entre el contrato a tiempo parcial y el fijo-discontinuo?", opciones: ["El fijo-discontinuo tiene una duración determinada", "El tiempo parcial se aplica solo a jóvenes menores de 25 años", "El fijo-discontinuo implica períodos de inactividad programada", "Ambos contratos son lo mismo"], respuesta: "El fijo-discontinuo implica períodos de inactividad programada" },
+    { pregunta: "El Estatuto de los Trabajadores es la norma básica que regula las relaciones laborales en España.", opciones: ["Verdadero", "Falso"], respuesta: "Verdadero" },
+    { pregunta: "El contrato de interinidad es un contrato indefinido.", opciones: ["Verdadero", "Falso"], respuesta: "Falso" },
+    { pregunta: "Los contratos temporales pueden tener una duración máxima de 3 años.", opciones: ["Verdadero", "Falso"], respuesta: "Verdadero" },
+    { pregunta: "Los trabajadores tienen derecho a la intimidad, lo que significa que nunca pueden ser grabados en su puesto de trabajo.", opciones: ["Verdadero", "Falso"], respuesta: "Falso" },
+    { pregunta: "Los trabajadores a tiempo parcial tienen derecho a las mismas condiciones de trabajo que los trabajadores a tiempo completo, en proporción a su jornada.", opciones: ["Verdadero", "Falso"], respuesta: "Verdadero" }
+];
+
+const contenedorPreguntas = document.getElementById("questions");
+
+preguntas.forEach((p, index) => {
+    const div = document.createElement("div");
+    div.classList.add("question");
+    div.innerHTML = `<p>${index + 1}. ${p.pregunta}</p>`;
+    p.opciones.forEach(opcion => {
+        div.innerHTML += `<label><input type="radio" name="pregunta${index}" value="${opcion}"> ${opcion}</label>`;
+    });
+    contenedorPreguntas.appendChild(div);
+});
+
+function calcularResultados() {
+    let puntaje = 0;
+    const respuestasUsuario = [];
+
+    preguntas.forEach((p, index) => {
+        const opciones = document.getElementsByName(`pregunta${index}`);
+        let seleccionada = null;
+        opciones.forEach(opcion => {
+            if (opcion.checked) {
+                seleccionada = opcion.value;
+            }
+        });
+        if (seleccionada === p.respuesta) {
+            puntaje++;
+            respuestasUsuario.push(`<p class="correct">Pregunta ${index + 1}: Correcta ✔</p>`);
+        } else {
+            respuestasUsuario.push(`<p class="incorrect">Pregunta ${index + 1}: Incorrecta ✖ (Respuesta correcta: ${p.respuesta})</p>`);
+        }
+    });
+
+    const resultadoFinal = `<p>Tu puntaje final es: ${puntaje} / ${preguntas.length}</p>`;
+    document.getElementById("resultados").innerHTML = resultadoFinal + respuestasUsuario.join("");
+}
+</script>
+
+</body>
+</html>
